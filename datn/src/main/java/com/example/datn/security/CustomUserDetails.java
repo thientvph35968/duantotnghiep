@@ -17,13 +17,23 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (nhanVien.getVaiTro() == null) {
+            System.out.println("❌ VAI TRÒ NULL!");
+            return List.of();
+        }
+
         String roleName = nhanVien.getVaiTro().getTenVaiTro();
-        return List.of(new SimpleGrantedAuthority("ROLE_" + roleName));
+        String authority = "ROLE_" + roleName;
+        System.out.println("✅ AUTHORITY: " + authority);
+
+        return List.of(new SimpleGrantedAuthority(authority));
     }
 
     @Override
     public String getPassword() {
-        return nhanVien.getMatKhau();
+        String password = nhanVien.getMatKhau();
+        System.out.println("   - Password trả về: " + password);
+        return password;
     }
 
     @Override
@@ -41,5 +51,9 @@ public class CustomUserDetails implements UserDetails {
     public boolean isCredentialsNonExpired() { return true; }
 
     @Override
-    public boolean isEnabled() { return nhanVien.getTrangThai() == 1; }
+    public boolean isEnabled() {
+        boolean enabled = nhanVien.getTrangThai() == 1;
+        System.out.println("   - isEnabled: " + enabled);
+        return enabled;
+    }
 }

@@ -22,15 +22,17 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-        String redirectURL = "/home"; // mặc định nếu không có role
+        String redirectURL = "/home"; // mặc định
 
         for (GrantedAuthority authority : authorities) {
             String role = authority.getAuthority();
-            if (role.equals("ADMIN")) {
+
+            // So sánh với ROLE_ADMIN và ROLE_USER
+            if (role.equals("ROLE_ADMIN")) {  // ✅ Thêm ROLE_
                 redirectURL = "/admin";
                 break;
-            } else if (role.equals("USER")) {
-                redirectURL = "/home";
+            } else if (role.equals("ROLE_USER")) {  // ✅ Thêm ROLE_
+                redirectURL = "/";
                 break;
             }
         }
